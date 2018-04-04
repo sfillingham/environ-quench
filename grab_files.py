@@ -11,7 +11,7 @@ def reader(filename, skiprows):
     return reader
 
 
-def data(filename, skiprows=[1, 57], chunk):
+def data(filename, skiprows=[1, 57], chunk=10):
     """
     """
     read_data = reader(filename, skiprows)
