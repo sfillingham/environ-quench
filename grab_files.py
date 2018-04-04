@@ -1,3 +1,12 @@
+"""This is a module that contains various functions to read in and parse large 
+data files. Specifically designed for the outputs of Rockstar and ConsistentTrees.
+
+Functions
+---------
+reader
+data
+"""
+
 import numpy as np
 import pandas as pd
 from astropy.table import Table
