@@ -69,7 +69,7 @@ def tree_chunk(halochunk, location, forest):
     """
 
     haloid = halochunk['Tree_root_ID(29)']
-    filename = location['Filename'].iloc[np.where(location['#TreeRootID'] == bighalo['Tree_root_ID(29)'])[0]].iloc[0]
+    filename = location['Filename'].iloc[np.where(location['#TreeRootID'] == halochunk['Tree_root_ID(29)'])[0]].iloc[0]
 
     treechunk = data(filename, chunk=25)
 
