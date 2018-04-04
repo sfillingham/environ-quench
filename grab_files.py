@@ -1,4 +1,4 @@
-"""This is a module that contains various functions to read in and parse large 
+"""This is a module that contains various functions to read in and parse relatively large 
 data files. Specifically designed for the outputs of Rockstar and ConsistentTrees.
 
 Functions
@@ -52,3 +52,25 @@ def data(filename, skiprows=[1, 57], chunk=10):
     data_chunk = read_data.get_chunk(chunk)
 
     return data_chunk
+
+
+def tree_chunk(halochunk, location, forest):
+    """
+    Parameters
+    ----------
+    halochunk : pd.DataFrame
+    location : pd.DataFrame
+    forest : pd.DataFrame
+
+    Returns
+    -------
+        treechunk : pd.DataFrame
+        The chunk of the entire tree file
+    """
+
+    haloid = halochunk['Tree_root_ID(29)']
+    filename = location['Filename'].iloc[np.where(location['#TreeRootID'] == bighalo['Tree_root_ID(29)'])[0]].iloc[0]
+
+    treechunk = data(filename, chunk=25)
+
+    return treechunk
