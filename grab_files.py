@@ -11,3 +11,9 @@ def reader(filename, skiprows=[1, 57]):
     return reader
 
 
+def data(reader, chunk):
+    """
+    """
+    data_chunk = reader.get_chunk(chunk)
+
+    return data_chunk
