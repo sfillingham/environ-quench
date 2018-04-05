@@ -55,7 +55,9 @@ def data(filename, skiprows=[1, 57], chunk=10):
 
 
 def tree_chunk(halochunk, location, forest):
-    """
+    """Given a halo TreeRootID identify and grab the appropriate tree data
+    in order to construct the evolutionary history of the halo properties.
+
     Parameters
     ----------
     halochunk : pd.DataFrame
@@ -75,4 +77,17 @@ def tree_chunk(halochunk, location, forest):
 
     return treechunk
 
-
+#Identify host halos, i.e. above 1.e13
+#Identify subhalos for every host halo
+#Match all halos to a tree file via location.dat
+#Select first tree file and read in
+#Loop through all halos in this tree file
+##select halo
+##select main branch using mmp? and Last_mainleaf_depthfirst_ID
+##trim DataFrame of unneccesary columns
+##output DataFrame in host directory
+#
+#select halo
+#Grab Tree_root_ID - map to tree_X_Y_Z.dat using location.dat
+#select main branch using mmp? and Last_mainleaf_depthfirst_ID
+#
