@@ -43,6 +43,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     #grab the halo catalog
     rows = [1, 57]
     read_halo = grab.reader(halofile, skiprows=rows)
+    halo_name = halofile.split('/')[-1]
 
     while masstest >= mass_range[0]:
 
@@ -62,6 +63,8 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         masstest = np.min(centralchunk[keys[11]])
         i += 1
 
-    centralgals.to_csv(userpath+'_'+halofile+'_centralhalos.csv')
+    halo_sname = halo_name.split('.')
+    haloname = halo_sname[0]+'.'+halo_sname[1]
+    centralgals.to_csv(userpath+'_'+haloname+'_centralhalos.csv')
 
     return centralgals
