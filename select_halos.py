@@ -10,6 +10,7 @@ import grab_files as grab
 def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     """This function will select all halos in the simulation
     based on the mass range specified.
+    This function assumes the halocatalogs are sorted by virial mass.
 
     Parameters
     ----------
@@ -23,7 +24,8 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     Returns
     -------
     centrals : pd.DataFrame
-        A pandas.DataFrame that contains all of the input columns
+        A pandas.DataFrame that contains all of the input columns for the 
+        selected central halos.
 
     """
     #initialize masstest
@@ -39,8 +41,8 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
         
-        selectcentral = np.where(np.logical_and(datachunk[keys[11]] >= mass_range[0],
-                                                    datachunk[keys[11]] <= mass_range[1]))
+        selectcentral = np.where(np.logical_and(datachunk[keys[11]] > mass_range[0],
+                                                    datachunk[keys[11]] < mass_range[1]))[0]
 
         centralchunk = datachunk.iloc[selectcentral]
         centrals.append(centralchunk, columns=keys)
