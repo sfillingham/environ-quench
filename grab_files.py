@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from astropy.table import Table
 
-def reader(filename, skiprows):
+def reader(filename, skiprows=[1, 50]):
     """Creates a reader object to parse a large data file
 
     Parameters
@@ -31,15 +31,14 @@ def reader(filename, skiprows):
     return reader
 
 
-def data(filename, skiprows=[1, 57], chunk=10):
+def data(reader, chunk=100):
     """Creates a pandas DataFrame that is a subset of the entire file
+    based on chunk
 
     Parameters
     ----------
-    filename : string
-    skiprows : tuple
-        A tuple that contains the min and max row to skip, (min, max)
-        All rows in between those value will be omitted from the reader object.
+    reader : pd.DataFrame
+        A pandas.DataFrame, use grab_files.reader
     chunk : int
         The number of rows to grab in the first chunk.
         Future versions will allow this to be looped over to work through the entire file.
@@ -48,8 +47,7 @@ def data(filename, skiprows=[1, 57], chunk=10):
     -------
         pd.DataFrame that is a subset of the entire file
     """
-    read_data = reader(filename, skiprows)
-    data_chunk = read_data.get_chunk(chunk)
+    data_chunk = reader.get_chunk(chunk)
 
     return data_chunk
 
