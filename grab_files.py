@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 from astropy.table import Table
 
-def reader(filename, skiprows=[1, 50]):
+def reader(filename, skiprows=[1, 57]):
     """Creates a reader object to parse a large data file
 
     Parameters
