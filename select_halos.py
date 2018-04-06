@@ -1,4 +1,11 @@
-"""
+"""This module has various functions that allow the user to 
+choose halos in an N-body simulation using various selection
+criteria.
+
+Functions
+---------
+centrals
+subhalos
 
 """
 
@@ -31,6 +38,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     #initialize masstest
     assert mass_range[1] > mass_range[0]
     masstest = mass_range[1]
+    i = 0
 
     #grab the halo catalog
     rows = [1, 57]
@@ -45,10 +53,15 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
                                                     datachunk[keys[11]] < mass_range[1]))[0]
 
         centralchunk = datachunk.iloc[selectcentral]
-        centrals.append(centralchunk, columns=keys)
 
+        if i == 0:
+            centralgals = centralchunk
+        else:
+            centralgals.append(centralchunk, columns=keys)
+        
         masstest = np.min(centralchunk[keys[11]])
+        i += 1
 
-    centrals.to_csv(userpath+'_'+halofile+'_centrals.csv')
+    centralgals.to_csv(userpath+'_'+halofile+'_centralhalos.csv')
 
-    return centrals
+    return centralgals
