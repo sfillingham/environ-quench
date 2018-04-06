@@ -35,9 +35,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         selected central halos.
 
     """
-    #initialize masstest
     assert mass_range[1] > mass_range[0]
-    masstest = mass_range[1]
     i = 0
 
     #grab the halo catalog
@@ -45,7 +43,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     read_halo = grab.reader(halofile, skiprows=rows)
     halo_name = halofile.split('/')[-1]
 
-    while masstest > mass_range[0]:
+    while True:
 
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
@@ -54,14 +52,15 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
                                                     datachunk['mvir(10)'] < mass_range[1]))[0]
 
         centralchunk = datachunk.iloc[selectcentral]
-        print(i)
+        
         if i == 0:
             centralgals = centralchunk
         else:
             centralgals.append(centralchunk, columns=keys)
         
-        masstest = np.min(centralchunk[keys[11]])
         i += 1
+        
+        len(datachunk) == chunk
 
     halo_sname = halo_name.split('.')
     haloname = halo_sname[0]+'.'+halo_sname[1]
