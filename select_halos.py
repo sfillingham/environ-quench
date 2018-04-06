@@ -40,8 +40,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
 
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
-        print(datachunk[keys[11]][:5])
-        print(mass_range[0])
+        
         selectcentral = np.where(np.logical_and(datachunk[keys[11]] > mass_range[0],
                                                     datachunk[keys[11]] < mass_range[1]))[0]
 
