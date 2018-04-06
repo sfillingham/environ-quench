@@ -45,7 +45,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     read_halo = grab.reader(halofile, skiprows=rows)
     halo_name = halofile.split('/')[-1]
 
-    while masstest >= mass_range[0]:
+    while masstest > mass_range[0]:
 
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
@@ -54,7 +54,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
                                                     datachunk[keys[11]] < mass_range[1]))[0]
 
         centralchunk = datachunk.iloc[selectcentral]
-
+        print(i)
         if i == 0:
             centralgals = centralchunk
         else:
