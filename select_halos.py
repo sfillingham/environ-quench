@@ -65,6 +65,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
 
     halo_sname = halo_name.split('.')
     haloname = halo_sname[0]+'.'+halo_sname[1]
+    print(haloname)
     centralgals.to_csv(userpath+haloname+'_centralhalos.csv')
 
     return centralgals
