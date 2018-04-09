@@ -43,7 +43,10 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     read_halo = grab.reader(halofile, skiprows=rows)
     halo_name = halofile.split('/')[-1]
 
-    while True:
+    #chunk size to test against
+    size=chunk
+
+    while chunk == size:
 
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
@@ -61,7 +64,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         i += 1
 
         print(i)
-        len(datachunk) == chunk
+        chunk = len(datachunk)
 
     halo_sname = halo_name.split('.')
     haloname = halo_sname[0]+'.'+halo_sname[1]
