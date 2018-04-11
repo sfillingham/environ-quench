@@ -75,7 +75,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
 
 
 def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
-                   dist=1.0, chunk=100):
+                   distlimit=1.0, chunk=100):
     """This function will select all satellites in the simulation
     based on the mass range specified and proximity to the host.
     This function assumes the halocatalogs are sorted by virial mass.
@@ -90,7 +90,7 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
         the input list of centrals to be used as the host locations
     mass_range : tuple
         min_mass, max_mass
-    dist : float
+    distlimit : float
         The maximum distance a halo can reside to be considered a satellite.
     chunk : float
         The number of lines to read in at a time.
@@ -114,6 +114,9 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
 
     #grab central galaxy catalog
     centrals = pd.read_csv(userpath+snapshotname+'_centralhalos.csv')
+    xcentral = centrals['x(17)']
+    ycentral = centrals['y(18)']
+    zcentral = centrals['z(19)']
 
     #chunk size to test against
     size=chunk
@@ -122,16 +125,24 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
 
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
-        
-        selectcentral = np.where(np.logical_and(datachunk['mvir(10)'] > mass_range[0],
-                                                    datachunk['mvir(10)'] < mass_range[1]))[0]
 
-        centralchunk = datachunk.iloc[selectcentral]
+        masscut = np.logical_and(datachunk['mvir(10)'] > mass_range[0],
+                                     datachunk['mvir(10)'] < mass_range[1])
+
+        x = datachunk['x(17)']
+        y = datachunk['y(18)']
+        z = datachunk['z(19)']
+        dx = (x - xcentral) / centrals['rvir(11)']
+        dy = (y - ycentral) / centrals['rvir(11)']
+        dz = (z - zcentral) / centrals['rvir(11)']
+        
+        selectsatellite = np.where(np.logical_and(masscut, distcut)[0]
+        satchunk = datachunk.iloc[selectsatellite]
         
         if i == 0:
-            centralgals = centralchunk
+            satellitegals = satchunk
         else:
-            centralgals.append(centralchunk)
+            satellitegals.append(satchunk)
         
         i += 1
 
