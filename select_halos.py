@@ -66,15 +66,16 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         print(i)
         chunk = len(datachunk)
 
-    halo_sname = halo_name.split('.')
-    haloname = halo_sname[0]+'.'+halo_sname[1]
+    snapshot_sname = snapshot_name.split('.')
+    snapshotname = snapshot_sname[0]+'.'+snapshot_sname[1]
     print(haloname)
-    centralgals.to_csv(userpath+haloname+'_centralhalos.csv')
+    centralgals.to_csv(userpath+snapshotname+'_centralhalos.csv')
 
     return centralgals
 
 
-def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13], dist=1.0, chunk=100):
+def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
+                   dist=1.0, chunk=100):
     """This function will select all satellites in the simulation
     based on the mass range specified and proximity to the host.
     This function assumes the halocatalogs are sorted by virial mass.
@@ -107,12 +108,12 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13], dist=1.0
     #grab the halo catalog
     rows = [1, 57]
     read_halo = grab.reader(halofile, skiprows=rows)
-    halo_name = halofile.split('/')[-1]
-    halo_sname = halo_name.split('.')
-    haloname = halo_sname[0]+'.'+halo_sname[1]
+    snapshot_name = halofile.split('/')[-1]
+    snapshot_sname = halo_name.split('.')
+    snapshotname = snapshot_sname[0]+'.'+snapshot_sname[1]
 
     #grab central galaxy catalog
-    centrals = pd.read_csv(userpath+haloname+'_centralhalos.csv')
+    centrals = pd.read_csv(userpath+snapshotname+'_centralhalos.csv')
 
     #chunk size to test against
     size=chunk
@@ -137,9 +138,7 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13], dist=1.0
         print(i)
         chunk = len(datachunk)
 
-    halo_sname = halo_name.split('.')
-    haloname = halo_sname[0]+'.'+halo_sname[1]
-    print(haloname)
-    centralgals.to_csv(userpath+haloname+'_satellitehalos.csv')
+    
+    satellitegals.to_csv(userpath+haloname+'_satellitehalos.csv')
 
-    return centralgals
+    return satellitegals
