@@ -109,11 +109,11 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
     rows = [1, 57]
     read_halo = grab.reader(halofile, skiprows=rows)
     snapshot_name = halofile.split('/')[-1]
-    snapshot_sname = halo_name.split('.')
+    snapshot_sname = snapshot_name.split('.')
     snapshotname = snapshot_sname[0]+'.'+snapshot_sname[1]
 
     #grab central galaxy catalog
-    centrals = pd.read_csv(userpath+snapshotname+'_centralhalos.csv')
+    centrals = pd.read_csv(hostfile)
     xcentral = centrals['x(17)'].values.reshape(len(centrals), 1)
     ycentral = centrals['y(18)'].values.reshape(len(centrals), 1)
     zcentral = centrals['z(19)'].values.reshape(len(centrals), 1)
@@ -164,6 +164,6 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
         chunk = len(datachunk)
 
     
-    satellitegals.to_csv(userpath+haloname+'_satellitehalos.csv')
+    satellitegals.to_csv(userpath+haloname+'_satellitehalos_'+np.str(distlimit)+'Rvir.csv')
 
     return satellitegals
