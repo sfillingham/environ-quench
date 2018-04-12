@@ -114,9 +114,13 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
 
     #grab central galaxy catalog
     centrals = pd.read_csv(userpath+snapshotname+'_centralhalos.csv')
-    xcentral = centrals['x(17)']
-    ycentral = centrals['y(18)']
-    zcentral = centrals['z(19)']
+    xcentral = centrals['x(17)'].values.reshape(len(centrals), 1)
+    ycentral = centrals['y(18)'].values.reshape(len(centrals), 1)
+    zcentral = centrals['z(19)'].values.reshape(len(centrals), 1)
+    rvir = centrals['rvir(11)'].values.reshape(len(centrals), 1)
+    xone = np.ones_like(xcentral)
+    yone = np.ones_like(ycentral)
+    zone = np.ones_like(zcentral)
 
     #chunk size to test against
     size=chunk
@@ -126,18 +130,28 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
 
-        masscut = np.logical_and(datachunk['mvir(10)'] > mass_range[0],
-                                     datachunk['mvir(10)'] < mass_range[1])
+        satmass = datachunk['mvir(10)'].values.reshape(len(datachunk), 1)
+        masscut = np.logical_and(satmass > mass_range[0],
+                                     satmass < mass_range[1])
 
-        x = datachunk['x(17)']
-        y = datachunk['y(18)']
-        z = datachunk['z(19)']
-        dx = (x - xcentral) / centrals['rvir(11)']
-        dy = (y - ycentral) / centrals['rvir(11)']
-        dz = (z - zcentral) / centrals['rvir(11)']
+        x = datachunk['x(17)'].values.reshape(len(datachunk), 1)
+        y = datachunk['y(18)'].values.reshape(len(datachunk), 1)
+        z = datachunk['z(19)'].values.reshape(len(datachunk), 1)
+        xmat = np.dot(x, xone.T)
+        ymat = np.dot(y, yone.T)
+        zmat = np.dot(z, zone.T)
+
+        dx = xmat.T - xcentral
+        dy = ymat.T - ycentral
+        dz = zmat.T - zcentral
+
+        dist = np.sqrt(dx ** 2 + dy ** 2 + dz ** 2)
+        normdist = dist ** 1000.0 / rvir
+
+        distcut = normdist <= distlimit
         
-        selectsatellite = np.where(np.logical_and(masscut, distcut)[0]
-        satchunk = datachunk.iloc[selectsatellite]
+        selectsatellite = np.where(np.logical_and(masscut.T, distcut))
+        satchunk = datachunk.iloc[selectsatellite[1]]
         
         if i == 0:
             satellitegals = satchunk
