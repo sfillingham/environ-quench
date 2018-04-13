@@ -74,7 +74,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     return centralgals
 
 
-def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e13],
+def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
                    distlimit=1.0, chunk=100):
     """This function will select all satellites in the simulation
     based on the mass range specified and proximity to the host.
