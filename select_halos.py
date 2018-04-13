@@ -41,7 +41,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
     #grab the halo catalog
     rows = [1, 57]
     read_halo = grab.reader(halofile, skiprows=rows)
-    halo_name = halofile.split('/')[-1]
+    snapshot_name = halofile.split('/')[-1]
 
     #chunk size to test against
     size=chunk
@@ -53,7 +53,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         
         selectcentral = np.where(np.logical_and(datachunk['mvir(10)'] > mass_range[0],
                                                     datachunk['mvir(10)'] < mass_range[1]))[0]
-
+        print(selectcentral.shape)
         centralchunk = datachunk.iloc[selectcentral]
         
         if i == 0:
