@@ -151,12 +151,13 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
         distcut = normdist <= distlimit
         
         selectsatellite = np.where(np.logical_and(masscut.T, distcut))
+        print(selectsatellite[1].shape)
         satchunk = datachunk.iloc[selectsatellite[1]]
         
         if i == 0:
             satellitegals = satchunk
         else:
-            satellitegals.append(satchunk)
+            satellitegals = satellitegals.append(satchunk)
         
         i += 1
 
