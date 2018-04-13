@@ -146,7 +146,7 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
         dz = zmat.T - zcentral
 
         dist = np.sqrt(dx ** 2 + dy ** 2 + dz ** 2)
-        normdist = dist ** 1000.0 / rvir
+        normdist = dist * 1000.0 / rvir
 
         distcut = normdist <= distlimit
         
