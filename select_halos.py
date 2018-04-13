@@ -53,7 +53,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         
         selectcentral = np.where(np.logical_and(datachunk['mvir(10)'] > mass_range[0],
                                                     datachunk['mvir(10)'] < mass_range[1]))[0]
-        print(selectcentral.shape)
+
         centralchunk = datachunk.iloc[selectcentral]
         
         if i == 0:
@@ -68,7 +68,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
 
     snapshot_sname = snapshot_name.split('.')
     snapshotname = snapshot_sname[0]+'.'+snapshot_sname[1]
-    print(haloname)
+    print(snapshotname)
     centralgals.to_csv(userpath+snapshotname+'_centralhalos.csv')
 
     return centralgals
