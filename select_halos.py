@@ -59,7 +59,7 @@ def centrals(userpath, halofile, mass_range=[1.e12, 1.e15], chunk=100):
         if i == 0:
             centralgals = centralchunk
         else:
-            centralgals.append(centralchunk)
+            centralgals = centralgals.append(centralchunk)
         
         i += 1
 
