@@ -118,9 +118,11 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
     ycentral = centrals['y(18)'].values.reshape(len(centrals), 1)
     zcentral = centrals['z(19)'].values.reshape(len(centrals), 1)
     rvir = centrals['rvir(11)'].values.reshape(len(centrals), 1)
+    mvir = centrals['mvir(10)'].values.reshape(len(centrals), 1)
     xone = np.ones_like(xcentral)
     yone = np.ones_like(ycentral)
     zone = np.ones_like(zcentral)
+    massone = np.ones_like(mvir)
 
     #chunk size to test against
     size=chunk
@@ -130,10 +132,17 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
         datachunk = read_halo.get_chunk(chunk)
         keys = datachunk.keys()
 
+        #create necessary mass arrays to select subhalos
         satmass = datachunk['mvir(10)'].values.reshape(len(datachunk), 1)
-        masscut = np.logical_and(satmass > mass_range[0],
-                                     satmass < mass_range[1])
+        massmat = np.dot(satmass, massone.T)
+        normmass = massmat / mvir
 
+        #subhalos need to be less than the mass of the "central"
+        hostmasscut = normmass <= 1.
+        satmasscut = np.logical_and(satmass > mass_range[0],
+                                     satmass < mass_range[1])
+        masscut = np.logical_and(satmasscut.T, hostmasscut)
+        
         x = datachunk['x(17)'].values.reshape(len(datachunk), 1)
         y = datachunk['y(18)'].values.reshape(len(datachunk), 1)
         z = datachunk['z(19)'].values.reshape(len(datachunk), 1)
@@ -150,7 +159,7 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
 
         distcut = normdist <= distlimit
         
-        selectsatellite = np.where(np.logical_and(masscut.T, distcut))
+        selectsatellite = np.where(np.logical_and(masscut, distcut))
         print(selectsatellite[1].shape)
         satchunk = datachunk.iloc[selectsatellite[1]]
         
