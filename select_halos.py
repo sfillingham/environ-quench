@@ -135,7 +135,7 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
         #create necessary mass arrays to select subhalos
         satmass = datachunk['mvir(10)'].values.reshape(len(datachunk), 1)
         massmat = np.dot(satmass, massone.T)
-        normmass = massmat / mvir
+        normmass = massmat.T / mvir
 
         #subhalos need to be less than the mass of the "central"
         hostmasscut = normmass <= 1.
