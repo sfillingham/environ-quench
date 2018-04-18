@@ -169,11 +169,9 @@ def satellites(userpath, halofile, hostfile, mass_range=[1.e10, 1.e14],
             satellitegals = satellitegals.append(satchunk)
         
         i += 1
-
-        print(i)
         chunk = len(datachunk)
 
     
-    #satellitegals.to_csv(userpath+snapshotname+'_satellitehalos_'+np.str(distlimit)+'Rvir.csv')
+    satellitegals.to_csv(userpath+snapshotname+'_satellitehalos_'+np.str(distlimit)+'Rvir.csv')
 
     return satellitegals
