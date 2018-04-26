@@ -50,8 +50,9 @@ def tree_evolution(halocat, locationfile, forestfile, keylist=['x', 'y', 'z']):
 
     Returns
     -------
-    A pd.DataFrame that contains the temporal evolution for every paramter listed
-    in the keylist.
+    output : pd.DataFrame
+        A pd.DataFrame that contains the temporal evolution for every paramter listed
+        in the keylist.
 
     """
     location = pd.read_table(locationfile)
@@ -62,14 +63,40 @@ def tree_evolution(halocat, locationfile, forestfile, keylist=['x', 'y', 'z']):
     uniquetree = np.unique(treename)
     rows = np.linspace(1, 47, 47)
 
+    #define empty dictionary that will contain all of the mainbranches
+    dictionary = {}
+
     for i in range(len(uniquetree)):
 
-        filename = '/Users/tmc/bolshoi/bolshoisims/trees/'+treename
-        tree = pd.read_table(filename, delim_whitespace=True, skiprows=rows)
+        halos = halocat.iloc[np.where(haloid == uniquetree[i])[0]]
+        treeID = halos['Tree_root_ID(29)']
+        lastleafID = halos['Last_mainleaf_depthfirst_ID(34)']
         
-    
+        filename = '/Users/tmc/bolshoi/bolshoisims/trees/'+uniquetree[i]
+        tree = pd.read_table(filename, skiprows = np.linspace(1, 47, 47), delim_whitespace=True)
 
-    
+        for j in range(len(halos)):
+
+            branch = tree.iloc[np.where(np.logical_and(treeID[j] == tree['Tree_root_ID(29)'],
+                                                           lastleafID[j] == tree['Last_mainleaf_depthfirst_ID(34)']))[0]]
+
+            mainbranch = branch.iloc[np.where(branch['mmp?(14)'] == 1)[0]]
+
+            cols = ['#scale(0)', 'id(1)', 'mvir(10)', 'rvir(11)', 'rs(12)',
+                        'vmax(16)', 'x(17)', 'y(18)', 'z(19)', 'vx(20)', 'vy(21)', 'vz(22)']
+
+            mainsubset = mainbranch[cols].copy()
+            mainsubset_label = mainsubset['id(1)'].iloc[0]
+
+            dictionary[np.str(mainsubset_label)] = mainsubset
+
+    #concatenate the dictionary into a pd.DataFrame
+    output = pd.concat(dictionary)
+
+    #write the output DataFrame to a csv file
+    output.to_csv(filename)
+
+    return output
 
 #Identify host halos, i.e. above 1.e13
 #Identify subhalos for every host halo
