@@ -66,13 +66,14 @@ def tree_evolution(halocat, locationfile, forestfile, filename, keylist=['x', 'y
     haloid = halocat['Tree_root_ID(29)']
     treename = location.iloc[np.where(location['#TreeRootID'] == haloid)[0]]
     uniquetree = np.unique(treename)
+    print(len(uniquetree))
     rows = np.linspace(1, 47, 47)
 
     #define empty dictionary that will contain all of the mainbranches
     dictionary = {}
 
     for i in range(len(uniquetree)):
-
+        print(uniquetree[i])
         halos = halocat.iloc[np.where(haloid == uniquetree[i])[0]]
         treeID = halos['Tree_root_ID(29)']
         lastleafID = halos['Last_mainleaf_depthfirst_ID(34)']
@@ -81,7 +82,7 @@ def tree_evolution(halocat, locationfile, forestfile, filename, keylist=['x', 'y
         tree = pd.read_table(filename, skiprows = np.linspace(1, 47, 47), delim_whitespace=True)
 
         for j in range(len(halos)):
-
+            print(treeID[j])
             branch = tree.iloc[np.where(np.logical_and(treeID[j] == tree['Tree_root_ID(29)'],
                                                            lastleafID[j] == tree['Last_mainleaf_depthfirst_ID(34)']))[0]]
 
