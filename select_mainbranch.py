@@ -60,7 +60,7 @@ def tree_evolution(halofile, locationfile, forestfile, filename, keylist=['x', '
         in the keylist.
 
     """
-    location = pd.read_table(locationfile)
+    location = pd.read_table(locationfile, delim_whitespace=True)
     #forest = pd.read_table(forestfile)
     halocat = pd.read_csv(halofile)
     
