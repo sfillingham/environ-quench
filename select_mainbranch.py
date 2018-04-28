@@ -65,8 +65,16 @@ def tree_evolution(halofile, locationfile, forestfile, filename, keylist=['x', '
     halocat = pd.read_csv(halofile)
     
     haloid = halocat['Tree_root_ID(29)']
-    treename = location.iloc[np.where(location['#TreeRootID'] == haloid)[0]]
-    uniquetree = np.unique(treename)
+
+    for i in range(len(haloid)):
+        
+        treename = location['Filename'].iloc[np.where(location['#TreeRootID'] == haloid[i])[0]]
+        if i == 0:
+            treefiles = treename
+        else:
+            treefiles = np.append(treefiles, treename)
+            
+    uniquetree = np.unique(treefiles)
     print(len(uniquetree))
     rows = np.linspace(1, 47, 47)
 
