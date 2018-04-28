@@ -9,6 +9,9 @@ tree_evolution
 
 """
 
+import numpy as np
+import pandas as pd
+
 def tree_chunk(halochunk, location, forest):
     """Given a halo TreeRootID identify and grab the appropriate tree data
     in order to construct the evolutionary history of the halo properties.
