@@ -62,7 +62,7 @@ def tree_evolution(halofile, locationfile, forestfile, filename, keylist=['x', '
     """
     location = pd.read_table(locationfile)
     #forest = pd.read_table(forestfile)
-    halocat = pd.read_table(halofile)
+    halocat = pd.read_csv(halofile)
     
     haloid = halocat['Tree_root_ID(29)']
     treename = location.iloc[np.where(location['#TreeRootID'] == haloid)[0]]
