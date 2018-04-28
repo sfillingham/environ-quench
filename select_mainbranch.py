@@ -36,7 +36,7 @@ def tree_chunk(halochunk, location, forest):
     return treechunk
 
 
-def tree_evolution(halocat, locationfile, forestfile, filename, keylist=['x', 'y', 'z']):
+def tree_evolution(halofile, locationfile, forestfile, filename, keylist=['x', 'y', 'z']):
     """Given a list of halos in the halocat, this will return the evolution of the parameters
     listed in the keylist.
 
@@ -61,7 +61,8 @@ def tree_evolution(halocat, locationfile, forestfile, filename, keylist=['x', 'y
 
     """
     location = pd.read_table(locationfile)
-    forest = pd.read_table(forestfile)
+    #forest = pd.read_table(forestfile)
+    halocat = pd.read_table(halofile)
     
     haloid = halocat['Tree_root_ID(29)']
     treename = location.iloc[np.where(location['#TreeRootID'] == haloid)[0]]
