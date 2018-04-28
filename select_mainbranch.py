@@ -33,7 +33,7 @@ def tree_chunk(halochunk, location, forest):
     return treechunk
 
 
-def tree_evolution(halocat, locationfile, forestfile, keylist=['x', 'y', 'z']):
+def tree_evolution(halocat, locationfile, forestfile, filename, keylist=['x', 'y', 'z']):
     """Given a list of halos in the halocat, this will return the evolution of the parameters
     listed in the keylist.
 
@@ -45,6 +45,8 @@ def tree_evolution(halocat, locationfile, forestfile, keylist=['x', 'y', 'z']):
         TreeRootID and the merger tree file
     forestfile : string
         Same as locationfile except for the forest
+    filename : string
+        The name of the output file that will be saved
     keylist : tuple
         A list of the DataFrame.keys() to be part of the ouput
 
