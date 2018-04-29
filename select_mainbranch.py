@@ -83,6 +83,7 @@ def tree_evolution(halofile, locationfile, forestfile, filename, keylist=['x', '
 
     for i in range(len(uniquetree)):
         print(uniquetree[i])
+        uniqueID = location['TreeRootID'].iloc[np.where(uniquetree[i] == treefiles)[0]]
         halos = halocat.iloc[np.where(haloid == uniquetree[i])[0]]
         treeID = halos['Tree_root_ID(29)']
         lastleafID = halos['Last_mainleaf_depthfirst_ID(34)']
